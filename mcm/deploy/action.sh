@@ -8,15 +8,17 @@ echo "Docker version $(docker version)"
 echo "Docker Compose version $(docker compose version)"
 
 # Download and decompress the required data
-echo 'Downloading McM data....' 
 if [ -z "$MCM_EXAMPLE_DATA_URL" ]; then
     echo 'Set $MCM_EXAMPLE_DATA_URL with the URL for downloading the McM data'
     exit 1
 fi
 
+echo 'Downloading McM data....'
 MCM_DATA_FILE="$HOME/data.tar.gz"
 curl -s -o $MCM_DATA_FILE $MCM_EXAMPLE_DATA_URL
+echo 'Decompressing ....'
 tar -xzf $MCM_DATA_FILE
+ls -alrh $MCM_DATA_FILE
 
 echo 'Creating data folders'
 DATA_PATH="$HOME/container"
