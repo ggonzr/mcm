@@ -18,7 +18,7 @@ MCM_DATA_FILE="$HOME/data.tar.gz"
 curl -s -o $MCM_DATA_FILE $MCM_EXAMPLE_DATA_URL
 echo 'Decompressing ....'
 tar -xzf $MCM_DATA_FILE
-ls -alrh $MCM_DATA_FILE
+ls -alrh $HOME
 
 echo 'Creating data folders'
 DATA_PATH="$HOME/container"
