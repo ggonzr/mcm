@@ -9,7 +9,7 @@ echo "Docker Compose version $(docker compose version)"
 
 # Download and decompress the required data
 echo 'Downloading McM data....' 
-if [ -z "${MCM_EXAMPLE_DATA_URL+x}" ]; then
+if [ -z "$MCM_EXAMPLE_DATA_URL" ]; then
     echo 'Set $MCM_EXAMPLE_DATA_URL with the URL for downloading the McM data'
     exit 1
 fi
@@ -44,3 +44,5 @@ echo "CouchDB:"
 curl -s "http://localhost:$COUCHDB_PORT/" | python3 -m json.tool
 echo "CouchDB Lucene"
 curl -s "http://localhost:$LUCENE_PORT/" | python3 -m json.tool
+echo "McM application"
+curl -s "http://localhost:8000/restapi/users/get_role" | python3 -m json.tool
