@@ -17,7 +17,7 @@ echo 'Downloading McM data....'
 MCM_DATA_FILE="$HOME/data.tar.gz"
 curl -s -o $MCM_DATA_FILE $MCM_EXAMPLE_DATA_URL
 echo 'Decompressing ....'
-tar -xzvf $MCM_DATA_FILE
+tar -xvf $MCM_DATA_FILE -C $HOME/
 ls -alrh $HOME
 
 echo 'Creating data folders'
