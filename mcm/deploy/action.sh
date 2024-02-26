@@ -7,10 +7,21 @@
 echo "Docker version $(docker version)"
 echo "Docker Compose version $(docker compose version)"
 
+# Download and decompress the required data
+echo 'Downloading McM data....' 
+if [ -z "${MCM_EXAMPLE_DATA_URL+x}" ]; then
+    echo 'Set $MCM_EXAMPLE_DATA_URL with the URL for downloading the McM data'
+    exit 1
+fi
+
+MCM_DATA_FILE="$HOME/data.tar.gz"
+curl -s -o $MCM_DATA_FILE $MCM_EXAMPLE_DATA_URL
+tar -xzf $MCM_DATA_FILE
+
 echo 'Creating data folders'
 DATA_PATH="$HOME/container"
-mkdir -p "$DATA_PATH/couchdb" && \
 mkdir -p "$DATA_PATH/lucene/data" && mkdir -p "$DATA_PATH/lucene/config"
+mv $HOME/couchdb $DATA_PATH
 chown -R "$(whoami):docker" $DATA_PATH && chmod -R 770 $DATA_PATH
 
 export COUCHDB_DATA="$DATA_PATH/couchdb"
