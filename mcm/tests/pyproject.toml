@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "mcm-tests"
+version = "0.1.0"
+description = ""
+authors = ["Geovanny Gonzalez <geovanny.gonzalez@cern.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pdmv-http-client = {git = "https://github.com/cms-PdmV/mcm_scripts.git"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
