@@ -45,13 +45,15 @@ class sequence(json_base):
 
     def srepr(self, arg):
         if isinstance(arg, str):  # Python 3: isinstance(arg, str)
-            return arg.decode('utf-8')
+            # INFO: <class: str> uses UTF-8 as default
+            return arg
         elif isinstance(arg, int):  # in case we have int we should make it string for cmsDriver construction
             return str(arg)
         try:
             return ",".join(self.srepr(x) for x in arg)
         except TypeError:  # catch when for loop fails
-            return arg.decode('utf-8')  # not a sequence so just return repr
+            # INFO: I assume this is a <class: str> right?
+            return arg  # not a sequence so just return repr
 
     def to_command_line(self, attribute):
         if attribute == 'index':
