@@ -23,7 +23,7 @@ RUN pip install -r requirements.txt
 # Create image for deployment
 FROM python:3.11.9-slim-bookworm@sha256:ad5dadd957a398226996bc4846e522c39f2a77340b531b28aaab85b2d361210b AS backend
 RUN pip install --upgrade pip setuptools wheel
-RUN apt update -y && apt upgrade -y
+RUN apt-get update && apt-get upgrade -y && apt install -y git curl
 
 # User and application folder
 RUN useradd --no-create-home --shell /bin/bash --uid 1001 pdmv
