@@ -251,8 +251,8 @@ class UpdateRequest(RequestRESTResource):
 
     def update(self):
         try:
-            data: dict = flask.request.json
-            res = self.update_request(data)
+            data_as_str: str = flask.request.data.decode("utf-8")
+            res = self.update_request(data_as_str)
             return res
         except Exception as e:
             # trace = traceback.format_exc()
