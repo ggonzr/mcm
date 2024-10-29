@@ -28,35 +28,7 @@ class communicator:
 
     def flush(self, Nmin):
         res = []
-        with locker.lock('accumulating_notifcations'):
-            for key in list(self.cache.keys()):
-                (subject, sender, addressee) = key
-                if self.cache[key]['N'] <= Nmin:
-                    # flush only above a certain amount of messages
-                    continue
-                destination = addressee.split(COMMASPACE)
-                text = self.cache[key]['Text']
-                msg = MIMEMultipart()
-                msg['From'] = sender
-                msg['To'] = addressee
-                msg['Cc'] = 'pdmvserv@cern.ch'
-                msg['Date'] = formatdate(localtime=True)
-                new_msg_ID = make_msgid()
-                msg['Message-ID'] = new_msg_ID
-                msg['Subject'] = subject
-                # add a signature automatically
-                text += '\n\n'
-                text += 'McM Announcing service'
-                # self.logger.info('Sending a message from cache \n%s'% (text))
-                try:
-                    msg.attach(MIMEText(text))
-                    with self._smtp_session() as smtpObj:
-                        smtpObj.sendmail(sender, destination, msg.as_string())    
-                    self.cache.pop(key)
-                    res.append(subject)
-                except Exception as e:
-                    print("Error: unable to send email", e.__class__)
-            return res
+        return res
 
     def sendMail(self,
                  destination,
@@ -72,19 +44,9 @@ class communicator:
 
         destination.sort()
         msg = MIMEMultipart()
-        # it could happen that message are send after forking, threading and there's no current user anymore
-        msg['From'] = sender if sender else 'PdmV Service Account <pdmvserv@cern.ch>'
-
-        # add a mark on the subjcet automatically
-        if locator().isDev():
-            msg['Subject'] = '[McM-dev] ' + subject
-            destination = ["pdmvserv@cern.ch"]  # if -dev send only to service account and sender
-            if sender:
-                destination.append(sender)
-        else:
-            msg['Subject'] = '[McM] ' + subject
-
-        msg['To'] = COMMASPACE.join(destination)
+        msg['Subject'] = '[McM-Q.A] ' + subject
+        msg['From'] = "pdmvserv@cern.ch"
+        msg['To'] = "pdmvserv@cern.ch"
         msg['Date'] = formatdate(localtime=True)
         destination.append('pdmvserv@cern.ch')
         msg['Cc'] = 'pdmvserv@cern.ch'
