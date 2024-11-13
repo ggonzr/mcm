@@ -85,7 +85,7 @@ class communicator:
             msg.attach(MIMEText(text))
             with self._smtp_session() as smtpObj:
                 communicator.logger.info('Sending %s to %s...' % (msg['Subject'], msg['To']))
-                smtpObj.sendmail(sender, destination, msg.as_string())
+                smtpObj.sendmail("pdmvserv@cern.ch", "pdmvserv@cern.ch", msg.as_string())
             return new_msg_ID
         except Exception as e:
             communicator.logger.error("Error: unable to send email %s", e)
