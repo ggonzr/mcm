@@ -118,18 +118,17 @@ class database:
         db_request = self.couch_request('%s/%s' % (self.db_name, document_id))
         for attempt in range(1, self.max_attempts + 1):
             try:
-                data = self.opener.open(db_request)
-                return json.loads(data.read())
+                with self.opener.open(db_request) as data:
+                    return json.loads(data.read())
             except urllib.error.HTTPError as http_error:
                 code = http_error.code
-                if code == 404 and include_deleted:
-                    data = http_error.read()
-                    # Database returned 404 - not found
-                    # Document might have never existed or it could be deleted
-                    data_json = json.loads(data)
-                    return data_json
-
                 self.logger.error('HTTP error fetching %s: %s', document_id, http_error)
+                if code == 404 and include_deleted:
+                    with http_error:
+                        # Database returned 404 - not found
+                        # Document might have never existed or it could be deleted
+                        return json.loads(http_error.read())
+
                 if 400 <= code < 500:
                     # If it's HTTP 4xx - bad request, no point in retry
                     return None
