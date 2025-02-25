@@ -20,6 +20,7 @@ from tools.logger import UserFilter
 from tools.locator import locator
 from flask_restful import Api
 from flask import Flask, send_from_directory, request, g
+from werkzeug.middleware.profiler import ProfilerMiddleware
 
 import json
 import signal
@@ -385,6 +386,9 @@ api.add_resource(
     '/restapi/control/communicate/<string:message_number>')
 api.add_resource(CacheInfo, '/restapi/control/cache_info')
 api.add_resource(CacheClear, '/restapi/control/cache_clear')
+
+# Set up the profiler
+app.wsgi_app = ProfilerMiddleware(app.wsgi_app, stream=None, profile_dir="profiler")
 
 
 def setup_error_logger(debug):
